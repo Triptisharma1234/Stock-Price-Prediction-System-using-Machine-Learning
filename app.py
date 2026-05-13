@@ -14,22 +14,47 @@ from sklearn.preprocessing import MinMaxScaler
 # --- 1. PAGE SETUP & STYLING ---
 st.set_page_config(page_title="AI FinTech Analytics", layout="wide", page_icon="💹")
 
+# --- CUSTOM UI STYLING (FIXED FOR LIGHT & DARK MODE) ---
 st.markdown("""
     <style>
-    [data-testid="stMetricValue"] { color: #00ffcc !important; font-size: 32px !important;}
-    [data-testid="stMetricLabel"] { color: #ffffff !important; }
-    div[data-testid="stVerticalBlock"] div[data-testid="metric-container"] {
-        border: 1px solid rgba(128,128,128,0.2);
-        background-color: rgba(255,255,255,0.02);
-        padding: 15px; border-radius: 12px;
+    /* 1. Global Title Styling */
+    .main-title { 
+        font-size: 42px; 
+        font-weight: bold; 
+        color: #1E1E2F; /* Deep Navy for professional look */
     }
-    .main-title { font-size: 42px; font-weight: bold; color: #ffffff; }
+
+    /* 2. Metric Container Styling */
+    div[data-testid="metric-container"] {
+        border: 1px solid rgba(128,128,128,0.2);
+        background-color: rgba(128,128,128,0.05);
+        padding: 20px; 
+        border-radius: 12px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+    }
+
+    /* 3. Metric Label (The "Current Price" text) - FORCED VISIBILITY */
+    [data-testid="stMetricLabel"] p {
+        color: #31333F !important; /* Standard Dark Grey */
+        font-weight: 600 !important;
+        font-size: 1.1rem !important;
+    }
+
+    /* 4. Metric Value (The actual numbers) */
+    [data-testid="stMetricValue"] { 
+        color: #008080 !important; /* Professional Teal - visible on both modes */
+        font-size: 32px !important;
+        font-weight: bold !important;
+    }
+    
+    /* 5. Header Colors */
+    h1, h2, h3 {
+        color: #1E1E2F !important;
+    }
     </style>
     """, unsafe_allow_html=True)
-
-st.markdown('<h1 class="main-title">💹  Stock Forecasting Engine</h1>', unsafe_allow_html=True)
-st.divider()
-
+ 
+   
 # --- 2. SIDEBAR (CONTROL PANEL) ---
 st.sidebar.header("🕹️ Project Control Panel")
 user_input = st.sidebar.text_input('Stock Ticker Symbol', 'AAPL')
