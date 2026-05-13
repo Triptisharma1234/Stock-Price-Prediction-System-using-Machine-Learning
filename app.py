@@ -15,45 +15,50 @@ from sklearn.preprocessing import MinMaxScaler
 st.set_page_config(page_title="AI FinTech Analytics", layout="wide", page_icon="💹")
 
 # --- CUSTOM UI STYLING (FIXED FOR LIGHT & DARK MODE) ---
+# --- UNIVERSAL UI STYLING (SMART LIGHT/DARK MODE) ---
 st.markdown("""
     <style>
-    /* 1. Global Title Styling */
+    /* 1. Use CSS Variables for automatic Theme Switching */
+    :root {
+        --header-color: var(--text-color);
+    }
+
+    /* 2. Main Title Styling */
     .main-title { 
         font-size: 42px; 
         font-weight: bold; 
-        color: #1E1E2F; /* Deep Navy for professional look */
+        color: var(--text-color); /* Automatically switches white/black */
     }
 
-    /* 2. Metric Container Styling */
+    /* 3. Metric Container - Glassmorphism look */
     div[data-testid="metric-container"] {
         border: 1px solid rgba(128,128,128,0.2);
-        background-color: rgba(128,128,128,0.05);
+        background-color: rgba(128,128,128,0.1); /* Subtle tint on both modes */
         padding: 20px; 
         border-radius: 12px;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
     }
 
-    /* 3. Metric Label (The "Current Price" text) - FORCED VISIBILITY */
+    /* 4. Metric Label (e.g., 'Current Price') - Force Visibility */
     [data-testid="stMetricLabel"] p {
-        color: #31333F !important; /* Standard Dark Grey */
+        color: var(--text-color) !important; 
+        opacity: 0.8; /* Slightly softer than the value */
         font-weight: 600 !important;
         font-size: 1.1rem !important;
     }
 
-    /* 4. Metric Value (The actual numbers) */
+    /* 5. Metric Value (The numbers) */
     [data-testid="stMetricValue"] { 
-        color: #008080 !important; /* Professional Teal - visible on both modes */
+        color: #00d4ff !important; /* A bright cyan that pops on both white and black */
         font-size: 32px !important;
         font-weight: bold !important;
     }
     
-    /* 5. Header Colors */
+    /* 6. Fix for Headings */
     h1, h2, h3 {
-        color: #1E1E2F !important;
+        color: var(--text-color) !important;
     }
     </style>
     """, unsafe_allow_html=True)
- 
    
 # --- 2. SIDEBAR (CONTROL PANEL) ---
 st.sidebar.header("🕹️ Project Control Panel")
