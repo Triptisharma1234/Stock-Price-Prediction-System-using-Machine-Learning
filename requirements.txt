@@ -3,9 +3,7 @@ pandas
 Pillow
 matplotlib
 streamlit
-keras
 tensorflow
-pandas_datareader
 yfinance
-sklearn
 scikit-learn
+seaborn
