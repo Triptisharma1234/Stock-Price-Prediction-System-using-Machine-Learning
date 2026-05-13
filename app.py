@@ -44,11 +44,17 @@ st.sidebar.caption("CSE Final Year Project 2026")
 LOOKBACK = 100 
 
 # --- 3. DATA INGESTION (CRITICAL: Must come before displaying data) ---
-@st.cache_data
+ @st.cache_data
 def get_data(ticker, start, end):
     try:
         data = yf.download(ticker, start=start, end=end)
         if data.empty: return None
+        
+        # --- FIX STARTS HERE ---
+        # If columns are Multi-Index (e.g., ('Close', 'AAPL')), flatten them
+        if isinstance(data.columns, pd.MultiIndex):
+            data.columns = data.columns.get_level_values(0)
+        # --- FIX ENDS HERE ---
         
         # Technical Indicators
         data['MA100'] = data['Close'].rolling(100).mean()
