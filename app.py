@@ -44,7 +44,7 @@ st.sidebar.caption("CSE Final Year Project 2026")
 LOOKBACK = 100 
 
 # --- 3. DATA INGESTION (CRITICAL: Must come before displaying data) ---
- @st.cache_data
+@st.cache_data
 def get_data(ticker, start, end):
     try:
         data = yf.download(ticker, start=start, end=end)
