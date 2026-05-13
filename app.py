@@ -69,34 +69,36 @@ df = get_data(user_input, start_date, end_date)
 if df is None or len(df) < 300:
     st.warning("Waiting for valid ticker or insufficient data (need at least 300 days).")
     st.stop()
-
 # --- 1. LIVE MARKET INDICATORS ---
 st.header("Live Market Indicators")
 
-# Calculate Volatility (Add this line before the columns)
-df['Volatility'] = df['Close'].rolling(window=20).std()
+# Check if df has enough rows to calculate indicators
+if df is not None and len(df) >= 200:
+    # Calculate Volatility
+    df['Volatility'] = df['Close'].rolling(window=20).std()
 
-ma50 = float(df['Close'].rolling(window=50).mean().iloc[-1])
-ma200 = float(df['Close'].rolling(window=200).mean().iloc[-1])
+    # Calculate Moving Averages safely
+    ma50 = float(df['Close'].rolling(window=50).mean().iloc[-1])
+    ma200 = float(df['Close'].rolling(window=200).mean().iloc[-1])
 
-if ma50 > ma200:
-    st.success("🚀 **Golden Cross Detected:** Long-term Bullish Trend!")
+    if ma50 > ma200:
+        st.success("🚀 **Golden Cross Detected:** Long-term Bullish Trend!")
+    else:
+        st.warning("⚠️ **Death Cross Detected:** Long-term Bearish Trend!")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric("Current Price", f"${float(df['Close'].iloc[-1]):.2f}")
+
+    with col2:
+        vol = float(df['Volatility'].iloc[-1])
+        st.metric("Market Volatility (20-day)", f"${vol:.2f}")
+
+    with col3:
+        st.metric("RSI (14-day)", f"{df['RSI'].iloc[-1]:.2f}" if 'RSI' in df else "N/A")
 else:
-    st.warning("⚠️ **Death Cross Detected:** Long-term Bearish Trend!")
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.metric("Current Price", f"${float(df['Close'].iloc[-1]):.2f}")
-
-with col2:
-    # Adding the Volatility metric here
-    vol = df['Volatility'].iloc[-1]
-    st.metric("Market Volatility (20-day)", f"${vol:.2f}")
-
-with col3:
-    # Your existing RSI or other indicator
-    st.metric("RSI (14-day)", f"{df['RSI'].iloc[-1]:.2f}" if 'RSI' in df else "N/A")
+    st.info("📥 Please wait... Fetching enough historical data to calculate trends.")
 
 # --- 5. DATASET INSIGHTS ---
 st.divider()
